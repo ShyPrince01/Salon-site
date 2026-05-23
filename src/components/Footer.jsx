@@ -1,6 +1,6 @@
 import { CgFacebook } from "react-icons/cg";
 import { FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaTwitter } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
@@ -14,12 +14,12 @@ const Footer = () => {
       link: "/aboutus",
     },
     {
-      name: "Service Menu",
-      link: "/servicemenu",
+      name: "Catalog",
+      link: "/catalog",
     },
     {
-      name: "Our Story",
-      link: "/ourstory",
+      name: "Contact Us",
+      link: "/contactus",
     },
   ];
   return (
@@ -27,7 +27,7 @@ const Footer = () => {
       <div className="2xl:container mx-auto grid lg:grid-cols-3">
         <div className=" flex justify-center lg:py-10">
           <div className="grid place-content-center uppercase rounded-full border-[15px] lg:border-[#fccab8] h-[200px] w-[200px] my-auto">
-            <p className="text-4xl font-bold">salon</p>
+            <p className="text-4xl font-bold">Lujo</p>
           </div>
         </div>
         <div className="flex flex-col justify-center items-center gap-5 lg:gap-2 mt-20 lg:mt-0">
@@ -49,17 +49,25 @@ const Footer = () => {
             <Link to="https://www.instagram.com/johnwritescode?igsh=YzJoczR6ZXliajls">
               <FaInstagram size={30} />
             </Link>
+            <Link to="">
+            <FaTwitter size={30} />
+            </Link>
           </div>
         </div>
       </div>
 
-      <div className="smallFont text-sm py-5 text-center mt-10 lg:mt-0">
+      <div className="smallFont text-sm py-5 text-center mt-10 lg:mt-0 ">
         <p className="font-bold">Built by Faithful John</p>
         <p className="flex gap-2 justify-center">
           <a href="https://x.com/HitzShyPrince?s=09" className="mt-2 p-4">
             {" "}
-            <FaXTwitter />{" "}
+            <FaTwitter />{" "}
           </a>
+        </p>
+        
+        {/* UPDATED: Dynamic year method applied strictly here */}
+        <p className="text-xs text-zinc-600 tracking-wider mt-4 uppercase">
+          © {new Date().getFullYear()} LUJO Artistry. All Rights Reserved.
         </p>
       </div>
     </footer>

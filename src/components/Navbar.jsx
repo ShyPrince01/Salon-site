@@ -1,31 +1,26 @@
-import{ useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { BiX } from "react-icons/bi";
 import { FaBars } from "react-icons/fa6";
 import { Link, NavLink, useLocation } from "react-router-dom";
 
-const Navbar = () => {
+// Receive props from App.jsx
+const Navbar = ({ cartCount, onCartClick }) => { 
   const links = [
     { name: "Home", link: "/" },
-    { name: "Book Online", link: "/bookappointment" },
-    { name: "Service Menu", link: "/servicemenu" },
-    { name: "Our Story", link: "/ourstory" },
+    { name: "About us", link: "/aboutus" },
+    { name: "Our Catalog", link: "/catalog" },
+    { name: "Contact us", link: "/contactus" },
   ];
 
   const [navOpen, setNavOpen] = useState(false);
   const location = useLocation();
-  const isHomePage = location.pathname === "/";
+  const isHomePage = location.pathname === "/" || location.pathname === "/catalog" || location.pathname === "/aboutus";
 
-  const navRef = useRef(null); // Reference to navbar container
+  const navRef = useRef(null); 
 
   useEffect(() => {
-    if (navOpen) {
-      document.body.style.overflow = "hidden"; // Prevent scrolling when navbar is open
-    } else {
-      document.body.style.overflow = "auto";
-    }
-    return () => {
-      document.body.style.overflow = "auto";
-    };
+    document.body.style.overflow = navOpen ? "hidden" : "auto";
+    return () => { document.body.style.overflow = "auto"; };
   }, [navOpen]);
 
   const handleOutsideClick = (e) => {
@@ -40,14 +35,12 @@ const Navbar = () => {
     } else {
       document.removeEventListener("mousedown", handleOutsideClick);
     }
-
-    return () => {
-      document.removeEventListener("mousedown", handleOutsideClick);
-    };
+    return () => { document.removeEventListener("mousedown", handleOutsideClick); };
   }, [navOpen]);
 
   return (
-    <nav className="px-[5%] lg:px-[10%] absolute text-white w-full left-0 text-sm">
+    // FIX: Added z-50 here to keep the entire navbar stack above page content
+    <nav className="px-[5%] lg:px-[10%] absolute text-white w-full left-0 text-sm z-50">
       {navOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-md transition-all duration-300"></div>
       )}
@@ -59,11 +52,12 @@ const Navbar = () => {
       >
         <div>
           <Link
+            to="/"
             className={`${
               isHomePage ? "text-white" : "text-black"
-            } p-2 font-sans text-xl font-semibold`}
+            } p-2 font-sans text-2xl font-light tracking-[0.15em]`}
           >
-            Salon
+            LUJO
           </Link>
         </div>
 
@@ -93,12 +87,16 @@ const Navbar = () => {
           ))}
 
           <div className="lg:ms-auto mt-10 lg:mt-0">
-            <Link
-              to="/contactus"
-              className="bg-[#fccab8] p-3 rounded text-black font-semibold"
+            <button
+              onClick={() => {
+                setNavOpen(false);
+                onCartClick();
+              }}
+              
+              className="bg-[#d8b4a7] p-3 px-6 w-full lg:w-auto rounded text-black font-semibold flex justify-center items-center gap-2 whitespace-nowrap"
             >
-              Contact Us
-            </Link>
+               Cart {cartCount > 0 && `(${cartCount})`}
+            </button>
           </div>
         </div>
 
@@ -107,9 +105,10 @@ const Navbar = () => {
             e.stopPropagation();
             setNavOpen(!navOpen);
           }}
+          // FIX: Added relative z-[60] and conditional text-black when navOpen is true so the "X" stays visible over the white menu drawer
           className={`${
-            isHomePage ? "text-white" : "text-black"
-          } block lg:hidden cursor-pointer`}
+            navOpen ? "text-black" : isHomePage ? "text-white" : "text-black"
+          } block lg:hidden cursor-pointer relative z-[60]`}
         >
           {navOpen ? <BiX size={45} /> : <FaBars size={30} />}
         </button>
